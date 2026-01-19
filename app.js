@@ -13,4 +13,6 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Smart Mandi Backend Running' });
 });
 
+const uploadRoutes = require('./routes/upload.routes');
+app.use('/api/uploads', uploadRoutes);
 module.exports = app;

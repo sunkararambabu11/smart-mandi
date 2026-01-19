@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
 
 module.exports = (req, res, next) => {
   try {
@@ -19,4 +20,10 @@ module.exports = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
+};
+exports.onlyFarmer = (req, res, next) => {
+  if (req.user.role !== 'FARMER') {
+    return res.status(403).json({ message: 'Only FARMER can add products' });
+  }
+  next();
 };

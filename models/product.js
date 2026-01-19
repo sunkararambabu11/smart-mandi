@@ -2,63 +2,37 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true
-    },
+    name: { type: String, required: true, trim: true },
 
-    category: {
-      type: String,
-      required: true,
-      trim: true
-    },
+    category: { type: String, required: true, trim: true }, // dynamic
 
-    pricePerKg: {
-      type: Number,
-      required: true,
-      min: 1
-    },
+    pricePerKg: { type: Number, required: true, min: 1 },
 
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    },
+    quantity: { type: Number, required: true, min: 1 },
 
-    unit: {
-      type: String,
-      enum: ['KG', 'TON'],
-      default: 'KG'
-    },
+    unit: { type: String, enum: ['KG', 'TON'], default: 'KG' },
 
-    description: {
-      type: String,
-      trim: true
-    },
+    description: { type: String, trim: true },
 
-    harvestDate: {
-      type: Date,
-      required: true
-    },
+    harvestDate: { type: Date, required: true },
 
     location: {
-      state: {
-        type: String,
-        required: true,
-        trim: true
-      },
-      district: {
-        type: String,
-        required: true,
-        trim: true
-      },
+      state: { type: String, required: true, trim: true },
+      district: { type: String, required: true, trim: true },
       pincode: {
         type: String,
         required: true,
-        match: /^[1-9][0-9]{5}$/ // Indian pincode validation
+        match: /^[1-9][0-9]{5}$/
       }
     },
+
+    // media URLs from upload API
+    media: [
+      {
+        url: { type: String, required: true },
+        type: { type: String, enum: ['IMAGE', 'VIDEO'], default: 'IMAGE' }
+      }
+    ],
 
     farmerId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -72,9 +46,7 @@ const productSchema = new mongoose.Schema(
       default: 'AVAILABLE'
     }
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model('Product', productSchema);
