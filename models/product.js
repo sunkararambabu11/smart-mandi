@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema(
 
     quantity: { type: Number, required: true, min: 1 },
 
-    unit: { type: String, enum: ['KG', 'TON'], default: 'KG' },
+    unit: { type: String, enum: ["KG", "TON"], default: "KG" },
 
     description: { type: String, trim: true },
 
@@ -26,27 +26,36 @@ const productSchema = new mongoose.Schema(
       }
     },
 
-    // media URLs from upload API
     media: [
       {
         url: { type: String, required: true },
-        type: { type: String, enum: ['IMAGE', 'VIDEO'], default: 'IMAGE' }
+        type: { type: String, enum: ["IMAGE", "VIDEO"], default: "IMAGE" }
       }
     ],
 
     farmerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true
     },
 
     status: {
       type: String,
-      enum: ['AVAILABLE', 'SOLD_OUT', 'BLOCKED'],
-      default: 'AVAILABLE'
+      enum: ['DRAFT', 'AVAILABLE', 'SOLD', 'EXPIRED'],
+      default: "AVAILABLE"
     }
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Product', productSchema);
+// ✅ show productId instead of _id in response
+productSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    ret.productId = ret._id;
+    delete ret._id;
+  }
+});
+
+module.exports = mongoose.model("Product", productSchema);

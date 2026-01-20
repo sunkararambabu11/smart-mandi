@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
 
-module.exports = (req, res, next) => {
+exports.protect = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -10,17 +9,15 @@ module.exports = (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // attach user info to request
-    req.user = decoded;
-
+    req.user = decoded; // { userId, role }
     next();
-  } catch (error) {
+  } catch (err) {
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
 };
+
 exports.onlyFarmer = (req, res, next) => {
   if (req.user.role !== 'FARMER') {
     return res.status(403).json({ message: 'Only FARMER can add products' });

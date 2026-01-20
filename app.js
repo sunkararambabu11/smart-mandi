@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth.routes');
+const productRoutes = require('./routes/product.routes');
+
 
 const app = express();
 
@@ -12,6 +14,8 @@ app.use('/api/auth', authRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Smart Mandi Backend Running' });
 });
+
+app.use('/api/products', productRoutes);
 
 const uploadRoutes = require('./routes/upload.routes');
 app.use('/api/uploads', uploadRoutes);
