@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -48,7 +47,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// ✅ show productId instead of _id in response
+//  show productId instead of _id in response
 productSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
